@@ -10,6 +10,7 @@ class Task:
         self.a1 = params.a1
         self.b1 = params.b1
 
+    # поменять надо 
     def solve(self):
         time.sleep(1)
 
@@ -20,7 +21,7 @@ class Task:
         }
 
         self.save_to_csv(result)
-        return result
+        return result  
 
     def save_to_csv(self, result):
         file_exists = os.path.isfile(CSV_FILE)

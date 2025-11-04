@@ -12,12 +12,13 @@ origins = [
 ]
 
 app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    CORSMiddleware,            # подключаем CORS-middleware FastAPI
+    allow_origins=origins,     # разрешаем запросы только с указанных источников (фронт URL)
+    # allow_credentials=True,    # разрешаем передачу cookies / auth-заголовков
+    allow_methods=["*"],       # разрешаем все HTTP методы (GET, POST, PUT, DELETE и т.п.)
+    allow_headers=["*"],       # разрешаем любые кастомные заголовки в запросах
 )
+
 
 @app.post("/run")
 def run_task(data: TaskParams):
