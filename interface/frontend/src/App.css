@@ -1,56 +1,134 @@
 .app-container {
-  max-width: 900px;
-  margin: 0 auto;
+  max-width: 550px;
+  margin-left: 50px;
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
-.drop-zone {
-  border: 2px dashed #888;
-  padding: 20px;
-  width: 300px;
+/* Заголовок */
+h1 {
+  font-weight: 600;
+  font-size: 2rem;
   text-align: center;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  transition: 0.2s;
+  margin-bottom: 24px;
+}
+
+/* Drag-and-Drop */
+.drop-zone {
+  border: 2px dashed var(--primary);
+  border-radius: 10px;
+  padding: 28px;
+  text-align: center;
+  transition: 0.25s;
+  font-weight: 500;
+  background: #f5f7ff;
 }
 
 .drop-zone:hover {
-  border-color: #555;
-  background-color: #fafafa;
+  background: #ebefff;
 }
 
+/* Кнопка */
 .run-btn {
-  padding: 10px 16px;
+  display: block;
+  margin: 18px auto 0;
+  padding: 12px 22px;
+  font-size: 1rem;
+
   border-radius: 8px;
-  border: 1px solid #333;
-  background: #fff;
+  border: none;
+  background: var(--primary);
+  color: white;
   cursor: pointer;
-  transition: 0.2s;
+
+  transition: 0.25s;
 }
 
 .run-btn:hover {
-  background: #e9e9e9;
+  background: var(--primary-hover);
 }
 
+/* Таблица */
 .history-table {
-  border-collapse: collapse;
   width: 100%;
-  margin-top: 15px;
+  border-collapse: collapse;
+  margin-top: 24px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .history-table th {
-  background: #444;
+  background: var(--primary);
   color: white;
-  padding: 8px;
+  padding: 10px;
+  font-weight: 600;
 }
 
 .history-table td {
-  padding: 8px;
-  border: 1px solid #aaa;
+  padding: 10px;
   text-align: center;
+  border-bottom: 1px solid #eee;
 }
 
 .history-table tr:nth-child(even) {
-  background: #f4f4f4;
+  background: #f8f9ff;
 }
+
+.history-table tr:hover {
+  background: #eef2ff;
+  transition: 0.2s;
+}
+
+label {
+  display: block;
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+
+input[type="range"] {
+  width: 100%;
+  margin-top: 6px;
+}
+
+/* Контейнер под один ползунок */
+.slider-block {
+  margin-bottom: 18px;
+}
+
+/* Линия ползунка */
+input[type="range"] {
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 4px;
+  background: #b8c7d5;
+}
+
+input[type="range"]:hover {
+  background: #c5caff;
+}
+
+/* Бегунок — Chrome/Edge/Safari */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--primary);
+  border-radius: 10px;
+  border: 2px solid white;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  background: var(--primary-hover);
+}
+
+/* Firefox
+input[type="range"]::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: var(--primary);
+  border-radius: 50%;
+  border: 2px solid white;
+  cursor: pointer;
+} */

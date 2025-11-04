@@ -4,7 +4,7 @@ export interface TaskParams {
 }
 
 export interface RunResponse {
-  results: {
+  result: {
     RES1: number;
     RES2: number;
     RES3: number;
