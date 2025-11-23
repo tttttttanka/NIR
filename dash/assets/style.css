@@ -5,3 +5,111 @@ body {
 h1, h3 {
     text-align: center;
 }
+
+/* Основной контейнер */
+.main-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Параметры */
+.param-label {
+    font-weight: 600;
+}
+
+.param-value {
+    margin-left: 6px;
+}
+
+.param-block {
+    margin-bottom: 25px;
+}
+
+.range-input-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.range-label {
+    margin-right: 5px;
+    font-size: 12px;
+}
+
+.range-input {
+    width: 70px;
+    padding: 3px;
+}
+
+.range-input-min {
+    margin-right: 15px;
+}
+
+/* Upload зона */
+.upload-zone {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    border-width: 2px;
+    border-style: dashed;
+    border-radius: 8px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.uploaded-file-name {
+    margin-bottom: 20px;
+}
+
+/* Лог контейнер */
+.log-container {
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    font-family: monospace;
+    padding: 15px;
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    margin-bottom: 20px;
+    min-height: 100px;
+}
+
+/* Заголовки */
+.section-title-top {
+    margin-top: 30px;
+}
+
+.section-title-bottom {
+    margin-top: 40px;
+}
+
+/* Информационный блок */
+.info-box {
+    background-color: #e3f2fd;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+/* Состояния пустых данных */
+.empty-state {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Графики */
+.graph-container-large {
+    margin-bottom: 30px;
+}
+
+.graph-container-small {
+    margin-bottom: 20px;
+}
+
+/* Таблица стили - для DataTable */
+.table-container {
+    overflow-x: auto;
+}
