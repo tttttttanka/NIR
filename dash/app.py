@@ -340,6 +340,20 @@ def update_log(n_intervals, run_id, is_running):
     return log_content, is_running, False
 
 @app.callback(
+    Output("table-container", "children", allow_duplicate=True),
+    Output("plots-container", "children", allow_duplicate=True),
+    Input("is-running", "data"),
+    State("current-run-id", "data"),
+    prevent_initial_call=True,
+)
+def auto_update_on_completion(is_running, run_id):
+    """Автоматическое обновление истории и графиков при завершении расчетов"""
+    if not is_running and run_id:  # Если расчеты завершились
+        time.sleep(0.5)  # Даем время на сохранение файлов
+        return create_history_table(), create_plots()
+    return no_update, no_update
+
+@app.callback(
     Output("table-container", "children"),
     Output("plots-container", "children"),
     Input("refresh-history-btn", "n_clicks"),
