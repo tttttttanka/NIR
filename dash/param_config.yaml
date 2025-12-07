@@ -1,0 +1,59 @@
+constants:
+  
+  SPECIFIC_HEAT:
+    name: "Удельная теплоемкость воды"
+    value: 4182
+    unit: "Дж/(кг·К)"
+    description: "Для расчетов тепловой энергии"
+
+parameters:
+  m:
+    name: "Масса"
+    type: "float"
+    default: 10.0
+    min: 1.0
+    max: 100.0
+    step: 1.0
+    unit: "кг"
+    description: "Масса объекта"
+  
+  g:
+    name: "Гравитация"
+    type: "float"
+    default: 9.81
+    min: 1.0
+    max: 20.0
+    step: 0.1
+    unit: "м/с²"
+    description: "Ускорение свободного падения"
+  
+  h:
+    name: "Высота"
+    type: "float"
+    default: 5.0
+    min: 0.0
+    max: 50.0
+    step: 0.5
+    unit: "м"
+    description: "Высота подъема"
+    formula: "0+50"
+  
+  V:
+    name: "Скорость"
+    type: "float"
+    default: 10.0
+    min: 0.0
+    max: 50.0
+    step: 0.5
+    unit: "м/с"
+    description: "Начальная скорость"
+  
+  T:
+    name: "Температура"
+    type: "float"
+    default: 20.0
+    min: -50.0
+    max: 100.0
+    step: 1.0
+    unit: "°C"
+    description: "Температура окружающей среды"

@@ -1,0 +1,55 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.venv/
+ENV/
+env/
+
+# Build & cache
+build/
+dist/
+*.egg-info/
+.cache/
+.pytest_cache/
+dash/__pycache__/
+interface/__pycache__/
+
+# Logs
+*.log
+
+
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+**/electron-app/dist/
+**/electron-app/out/
+**/electron-app/build/
+**/electron-app/releases/
+
+# Large Electron binaries
+**/electron-app/node_modules/electron/dist/
+
+
+.DS_Store
+Thumbs.db
+
+
+*.pro.user
+*.qmlc
+*.jsc
+*.orig
+*.autosave
+interface/build/
+interface/dist/
+
+.temp/
+tmp/
+logs/
+.cache/

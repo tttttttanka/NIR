@@ -1,84 +1,100 @@
 import os
 import time
 import pandas as pd
-import numpy as np
+
 
 class Task:
-    def __init__(self, parameters, folder, series_id):
-        self.parameters = parameters
+
+    def __init__(self, params: dict, folder: str, index: int):
+        self.params = params
+        self.index = index
         self.folder = folder
-        self.series_id = series_id
 
-        self.path = os.path.join("runs", folder)
-        os.makedirs(self.path, exist_ok=True)
+        self.run_path = os.path.join("runs", folder)
+        os.makedirs(self.run_path, exist_ok=True)
 
-        self.log_path = os.path.join(self.path, "log.txt")
-        self.csv_path = os.path.join(self.path, "results.csv")
+        self.log_path = os.path.join(self.run_path, "log.txt")
+        self.results_path = os.path.join(self.run_path, "results.csv")
 
-    def log(self, text):
-        """Записывает строку в log.txt с блокировкой для многопоточности"""
-        try:
-            with open(self.log_path, "a", encoding="utf-8") as f:
-                f.write(text + "\n")
-        except Exception as e:
-            print(f"Ошибка записи в лог: {e}")
+    def log(self, text: str):
+        with open(self.log_path, "a", encoding="utf-8") as f:
+            f.write(text + "\n")
+
+
+    def param(self, key: str, default=None):
+        if key not in self.params:
+            if default is not None:
+                return default
+            self.log(f"[ОШИБКА] Параметр '{key}' не найден.")
+            raise ValueError(f"Missing parameter: {key}")
+        return float(self.params[key])
+
+    def step(self, name: str, value):
+        self.log(f"   {name}: {value:.4f}")
+        time.sleep(0.4)
+
 
     def solve(self):
-        self.log(f"=== Серия {self.series_id + 1} ===")
-        self.log(f"Параметры: {self.parameters}")
-        time.sleep(0.5)
+        self.log(f"\nСерия {self.index + 1} ")
 
         try:
-            # Пример расчетов (замените на ваши формулы ANSYS)
-            operations = {
-                "E_pot": self.parameters.get('m', 0) * self.parameters.get('g', 0) * self.parameters.get('h', 0),
-                "E_kin": (self.parameters.get('m', 0) * self.parameters.get('V', 0)**2) / 2,
-                "E_total": 0  # Будет вычислено ниже
-            }
+            # Основные параметры
+            m = self.param("m")
+            g = self.param("g")
+            h = self.param("h")
+            V = self.param("V")
+            T = self.param("T")
             
-            operations["E_total"] = operations["E_pot"] + operations["E_kin"]
+            # Константы
+            SPECIFIC_HEAT = self.param("SPECIFIC_HEAT")
 
-            for name, value in operations.items():
-                self.log(f"{name} = {value:.4f}")
-                time.sleep(1)  # Имитация долгих вычислений
-
-            self.log(f"Серия {self.series_id + 1} завершена\n")
-
-            # Сохраняем результаты с блокировкой для многопоточности
-            self.save_results(operations)
-            
-            return operations
-            
         except Exception as e:
-            self.log(f"Ошибка в серии {self.series_id + 1}: {str(e)}")
-            return None
+            self.log(f"[ОШИБКА] Невозможно вычислить серию: {str(e)}")
+            return
 
-    def save_results(self, operations):
-        """Безопасное сохранение результатов в CSV для многопоточности"""
-        result_row = {**self.parameters, **operations}
-        
-        # Создаем временный файл для избежания конфликтов
-        temp_csv_path = self.csv_path + ".tmp"
-        
-        try:
-            # Если файл существует, читаем его и добавляем новую строку
-            if os.path.exists(self.csv_path):
-                df = pd.read_csv(self.csv_path)
-                df = pd.concat([df, pd.DataFrame([result_row])], ignore_index=True)
-            else:
-                df = pd.DataFrame([result_row])
-            
-            # Сохраняем во временный файл
-            df.to_csv(temp_csv_path, index=False)
-            
-            # Атомарно заменяем старый файл новым
-            if os.path.exists(self.csv_path):
-                os.replace(temp_csv_path, self.csv_path)
-            else:
-                os.rename(temp_csv_path, self.csv_path)
-                
-        except Exception as e:
-            self.log(f"Ошибка сохранения результатов: {str(e)}")
-            # Удаляем временный файл в случае ошибки
-            if os.path.exists(temp_csv_path):
-                os.remove(temp_csv_path)
+        self.log(f"Параметры: m={m}, g={g}, h={h}, V={V}, T={T}")
+
+        # --- Потенциальная энергия ---
+        E_pot = m * g * h
+        self.step("E_pot (потенциальная)", E_pot)
+
+        # --- Кинетическая энергия ---
+        E_kin = 0.5 * m * V ** 2
+        self.step("E_kin (кинетическая)", E_kin)
+
+        # --- Полная энергия ---
+        E_total = E_pot + E_kin
+        self.step("E_total (полная)", E_total)
+
+        # --- Новая формула (тепловая энергия) ---
+        Q = m * SPECIFIC_HEAT * (T - 20)
+        self.step("E_heat (тепловая)", Q)
+
+        row = {
+            "series": self.index + 1,
+
+            "m": m,
+            "g": g,
+            "h": h,
+            "V": V,
+            "T": T,
+
+            "SPECIFIC_HEAT": SPECIFIC_HEAT,
+
+            "E_pot": E_pot,
+            "E_kin": E_kin,
+            "E_total": E_total,
+            "Q": Q,
+
+        }
+
+        # Если файла нет — создаём
+        if not os.path.exists(self.results_path):
+            df = pd.DataFrame([row])
+            df.to_csv(self.results_path, index=False)
+        else:
+            df = pd.read_csv(self.results_path)
+            df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
+            df.to_csv(self.results_path, index=False)
+
+        self.log("Серия завершена.\n")
